@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # Base de datos para accounts-service
+  accounts-db:
+    image: mariadb:10.11
+    container_name: accounts-db
+    environment:
+      MYSQL_DATABASE: accounts_db
+      MYSQL_USER: accounts_user
+      MYSQL_PASSWORD: accounts_pass
+      MYSQL_ROOT_PASSWORD: root_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - accounts-db-data:/var/lib/mysql
+    networks:
+      - monopatines-network
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Accounts Service
+  accounts-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: accounts-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://accounts-db:3306/accounts_db
+      SPRING_DATASOURCE_USERNAME: accounts_user
+      SPRING_DATASOURCE_PASSWORD: accounts_pass
+    ports:
+      - "8081:8080"
+    depends_on:
+      accounts-db:
+        condition: service_healthy
+    networks:
+      - monopatines-network
+
+volumes:
+  accounts-db-data:
+
+networks:
+  monopatines-network:
+    driver: bridge
+    external: false
+
