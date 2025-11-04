@@ -31,8 +31,9 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
             "POST:/api/auth/register",
             "POST:/api/auth/login",
             "POST:/api/auth/refresh",
-            "POST:/api/accounts", // Solo POST para crear cuenta (registro)
-            "POST:/api/accounts/users", // Solo POST para crear usuario (registro)
+            "POST:/api/auth/logout",
+            "POST:/api/accounts", 
+            "POST:/api/accounts/users", 
             "GET:/swagger-ui",
             "GET:/v3/api-docs",
             "GET:/actuator"
@@ -277,8 +278,9 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         )));
     }
 
+    // Ejecuta antes que otros filtros
     @Override
     public int getOrder() {
-        return -100; // Ejecutar antes que otros filtros
+        return -100; 
     }
 }
