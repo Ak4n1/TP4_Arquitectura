@@ -1,0 +1,10 @@
+com.tudai.monopatines.accounts.grpc
+com.tudai.monopatines.auth
+com.tudai.monopatines.auth.config
+com.tudai.monopatines.auth.controller
+com.tudai.monopatines.auth.dto
+com.tudai.monopatines.auth.model
+com.tudai.monopatines.auth.security.config
+com.tudai.monopatines.auth.security.model
+com.tudai.monopatines.auth.security.services
+com.tudai.monopatines.auth.service

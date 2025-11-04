@@ -4,8 +4,6 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
-import io.swagger.v3.oas.models.security.SecurityScheme;
-import io.swagger.v3.oas.models.Components;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,7 +18,6 @@ public class OpenApiConfig {
      * 
      * Define el titulo, descripcion, version y otra informacion de contacto
      * que aparecera en la documentacion interactiva de Swagger UI.
-     * Tambien incluye informacion sobre seguridad JWT.
      * 
      * @return OpenAPI con la configuracion de la documentacion
      */
@@ -42,13 +39,7 @@ public class OpenApiConfig {
                                 .email("encabojuan@gmail.com"))
                         .license(new License()
                                 .name("Apache 2.0")
-                                .url("https://www.apache.org/licenses/LICENSE-2.0.html")))
-                .components(new Components()
-                        .addSecuritySchemes("bearer-jwt", new SecurityScheme()
-                                .type(SecurityScheme.Type.HTTP)
-                                .scheme("bearer")
-                                .bearerFormat("JWT")
-                                .description("JWT token obtenido desde auth-service. El token debe incluirse en el header Authorization como 'Bearer {token}' o en la cookie 'accessToken'.")));
+                                .url("https://www.apache.org/licenses/LICENSE-2.0.html")));
     }
 }
 

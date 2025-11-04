@@ -37,7 +37,8 @@ services:
       SPRING_DATASOURCE_USERNAME: accounts_user
       SPRING_DATASOURCE_PASSWORD: accounts_pass
     ports:
-      - "8081:8080"
+      - "8081:8080"  # REST API (publico)
+      - "9090:9090"  # gRPC (interno, solo para auth-service)
     depends_on:
       accounts-db:
         condition: service_healthy

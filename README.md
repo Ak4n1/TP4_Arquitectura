@@ -12,4 +12,5 @@
 
 - **Accounts Service** (desde el Gateway): `http://localhost:8080/swagger-ui/index.html`
 - **Accounts Service** (directo): `http://localhost:8081/swagger-ui/index.html`
+- **Auth Service** (directo): `http://localhost:8082/swagger-ui/index.html`
 

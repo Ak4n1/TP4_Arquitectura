@@ -36,7 +36,7 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "*"
+            allowedOriginPatterns: "*"
             allowedMethods:
               - GET
               - POST
@@ -44,12 +44,13 @@ spring:
               - DELETE
               - OPTIONS
             allowedHeaders: "*"
-            allowCredentials: false
+            allowCredentials: true
 
 # JWT Configuration (para validar tokens)
+# IMPORTANTE: Debe ser el mismo secret que usa auth-service para generar tokens
+# La clave debe tener al menos 512 bits (64 caracteres) para HS512
 jwt:
-  secret: your-secret-key-here-change-this-in-production
-  public-key: # Opcional: si usas RS256
+  secret: your-secret-key-here-change-this-in-production-use-a-very-long-secret-key-with-at-least-64-characters-for-hs512-algorithm
 
 logging:
   level:
