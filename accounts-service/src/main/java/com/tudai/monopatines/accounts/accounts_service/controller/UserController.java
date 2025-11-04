@@ -31,13 +31,16 @@ public class UserController {
 
     @Operation(
         summary = "Crear un nuevo usuario",
-        description = "Crea un nuevo usuario en el sistema. El password debe venir hasheado desde auth-service. Se asigna ROLE_USER por defecto."
+        description = "Crea un nuevo usuario en el sistema. El password debe venir hasheado desde auth-service. Se asigna ROLE_USER por defecto. " +
+                "Este endpoint es PUBLICO (no requiere autenticacion) ya que es parte del proceso de registro. " +
+                "Normalmente es llamado internamente por auth-service durante el registro mediante gRPC. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Usuario creado exitosamente",
             content = @Content(schema = @Schema(implementation = UserResponse.class))),
         @ApiResponse(responseCode = "409", description = "El email ya existe"),
-        @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos")
+        @ApiResponse(responseCode = "400", description = "Datos de entrada invalidos")
     })
     @PostMapping
     public ResponseEntity<UserResponse> createUser(
@@ -49,7 +52,9 @@ public class UserController {
 
     @Operation(
         summary = "Obtener usuario por ID",
-        description = "Obtiene los datos de un usuario incluyendo sus roles asignados"
+        description = "Obtiene los datos de un usuario incluyendo sus roles asignados. " +
+                "Roles requeridos: ROLE_USER, ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Usuario encontrado",
@@ -66,7 +71,9 @@ public class UserController {
 
     @Operation(
         summary = "Obtener usuario por email",
-        description = "Obtiene los datos de un usuario por su email (único en el sistema) incluyendo sus roles"
+        description = "Obtiene los datos de un usuario por su email (unico en el sistema) incluyendo sus roles. " +
+                "Roles requeridos: ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Usuario encontrado",
@@ -83,7 +90,9 @@ public class UserController {
 
     @Operation(
         summary = "Obtener todos los usuarios",
-        description = "Retorna la lista completa de usuarios del sistema, incluyendo sus roles asignados"
+        description = "Retorna la lista completa de usuarios del sistema, incluyendo sus roles asignados. " +
+                "Roles requeridos: ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway."
     )
     @ApiResponse(responseCode = "200", description = "Lista de usuarios obtenida exitosamente")
     @GetMapping("/all")
@@ -94,14 +103,16 @@ public class UserController {
 
     @Operation(
         summary = "Actualizar usuario",
-        description = "Actualiza los datos de un usuario existente. No incluye password (se cambia desde auth-service)"
+        description = "Actualiza los datos de un usuario existente. No incluye password (se cambia desde auth-service). " +
+                "Roles requeridos: ROLE_USER, ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Usuario actualizado exitosamente",
             content = @Content(schema = @Schema(implementation = UserResponse.class))),
         @ApiResponse(responseCode = "404", description = "Usuario no encontrado"),
         @ApiResponse(responseCode = "409", description = "El nuevo email ya existe"),
-        @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos")
+        @ApiResponse(responseCode = "400", description = "Datos de entrada invalidos")
     })
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(
@@ -115,7 +126,9 @@ public class UserController {
 
     @Operation(
         summary = "Eliminar usuario",
-        description = "Elimina un usuario del sistema permanentemente"
+        description = "Elimina un usuario del sistema permanentemente. " +
+                "Roles requeridos: ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway. Esta operacion es solo para administradores."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Usuario eliminado exitosamente"),

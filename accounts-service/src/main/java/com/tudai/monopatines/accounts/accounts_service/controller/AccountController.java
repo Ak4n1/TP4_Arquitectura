@@ -32,13 +32,15 @@ public class AccountController {
 
     @Operation(
         summary = "Crear cuenta",
-        description = "Crea una nueva cuenta asociada a una cuenta de Mercado Pago"
+        description = "Crea una nueva cuenta asociada a una cuenta de Mercado Pago. " +
+                "Este endpoint es PUBLICO (no requiere autenticacion) ya que es parte del proceso de registro de nuevos usuarios. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Cuenta creada exitosamente",
             content = @Content(schema = @Schema(implementation = AccountResponse.class))),
-        @ApiResponse(responseCode = "409", description = "El número identificatorio ya existe"),
-        @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos")
+        @ApiResponse(responseCode = "409", description = "El numero identificatorio ya existe"),
+        @ApiResponse(responseCode = "400", description = "Datos de entrada invalidos")
     })
     @PostMapping
     public ResponseEntity<AccountResponse> createAccount(
@@ -50,7 +52,9 @@ public class AccountController {
 
     @Operation(
         summary = "Obtener cuenta por ID",
-        description = "Obtiene los datos de una cuenta por su identificador único"
+        description = "Obtiene los datos de una cuenta por su identificador unico. " +
+                "Roles requeridos: ROLE_USER, ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Cuenta encontrada",
@@ -67,7 +71,9 @@ public class AccountController {
 
     @Operation(
         summary = "Obtener todas las cuentas",
-        description = "Retorna la lista completa de cuentas del sistema"
+        description = "Retorna la lista completa de cuentas del sistema. " +
+                "Roles requeridos: ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway."
     )
     @ApiResponse(responseCode = "200", description = "Lista de cuentas obtenida exitosamente")
     @GetMapping
@@ -78,7 +84,9 @@ public class AccountController {
 
     @Operation(
         summary = "Obtener cuentas activas",
-        description = "Retorna únicamente las cuentas que están activas (no anuladas)"
+        description = "Retorna unicamente las cuentas que estan activas (no anuladas). " +
+                "Roles requeridos: ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway."
     )
     @ApiResponse(responseCode = "200", description = "Lista de cuentas activas obtenida exitosamente")
     @GetMapping("/active")
@@ -89,14 +97,16 @@ public class AccountController {
 
     @Operation(
         summary = "Actualizar cuenta",
-        description = "Actualiza los datos de una cuenta existente"
+        description = "Actualiza los datos de una cuenta existente. " +
+                "Roles requeridos: ROLE_USER, ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Cuenta actualizada exitosamente",
             content = @Content(schema = @Schema(implementation = AccountResponse.class))),
         @ApiResponse(responseCode = "404", description = "Cuenta no encontrada"),
-        @ApiResponse(responseCode = "409", description = "El nuevo número identificatorio ya existe"),
-        @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos")
+        @ApiResponse(responseCode = "409", description = "El nuevo numero identificatorio ya existe"),
+        @ApiResponse(responseCode = "400", description = "Datos de entrada invalidos")
     })
     @PutMapping("/{id}")
     public ResponseEntity<AccountResponse> updateAccount(
@@ -110,7 +120,9 @@ public class AccountController {
 
     @Operation(
         summary = "Anular cuenta",
-        description = "Marca una cuenta como inactiva y establece la fecha de anulación. Una cuenta anulada no puede ser utilizada para nuevos viajes."
+        description = "Marca una cuenta como inactiva y establece la fecha de anulacion. Una cuenta anulada no puede ser utilizada para nuevos viajes. " +
+                "Roles requeridos: ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway. Esta operacion es solo para administradores."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Cuenta anulada exitosamente",
@@ -127,13 +139,15 @@ public class AccountController {
 
     @Operation(
         summary = "Cargar saldo a cuenta",
-        description = "Incrementa el saldo actual de la cuenta con el monto especificado"
+        description = "Incrementa el saldo actual de la cuenta con el monto especificado. " +
+                "Roles requeridos: ROLE_USER, ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Saldo cargado exitosamente",
             content = @Content(schema = @Schema(implementation = BalanceResponse.class))),
         @ApiResponse(responseCode = "404", description = "Cuenta no encontrada"),
-        @ApiResponse(responseCode = "400", description = "La cuenta está anulada o datos inválidos")
+        @ApiResponse(responseCode = "400", description = "La cuenta esta anulada o datos invalidos")
     })
     @PutMapping("/{id}/balance")
     public ResponseEntity<BalanceResponse> loadBalance(
@@ -147,7 +161,9 @@ public class AccountController {
 
     @Operation(
         summary = "Obtener saldo de cuenta",
-        description = "Retorna el saldo actual de una cuenta"
+        description = "Retorna el saldo actual de una cuenta. " +
+                "Roles requeridos: ROLE_USER, ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Saldo obtenido exitosamente",
@@ -164,13 +180,15 @@ public class AccountController {
 
     @Operation(
         summary = "Descontar saldo de cuenta",
-        description = "Descuenta un monto del saldo de una cuenta. Se utiliza cuando se activa un monopatín o se finaliza un viaje."
+        description = "Descuenta un monto del saldo de una cuenta. Se utiliza cuando se activa un monopatin o se finaliza un viaje. " +
+                "Roles requeridos: ROLE_EMPLOYEE, ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway. Este endpoint es usado principalmente por otros microservicios."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Saldo descontado exitosamente",
             content = @Content(schema = @Schema(implementation = BalanceResponse.class))),
         @ApiResponse(responseCode = "404", description = "Cuenta no encontrada"),
-        @ApiResponse(responseCode = "400", description = "La cuenta está anulada, no hay saldo suficiente o datos inválidos")
+        @ApiResponse(responseCode = "400", description = "La cuenta esta anulada, no hay saldo suficiente o datos invalidos")
     })
     @PutMapping("/{id}/balance/deduct")
     public ResponseEntity<BalanceResponse> deductBalance(
@@ -183,8 +201,10 @@ public class AccountController {
     }
 
     @Operation(
-        summary = "Verificar si cuenta está activa",
-        description = "Retorna true si la cuenta está activa, false si está anulada. Usado por otros microservicios."
+        summary = "Verificar si cuenta esta activa",
+        description = "Retorna true si la cuenta esta activa, false si esta anulada. Usado por otros microservicios. " +
+                "Roles requeridos: ROLE_EMPLOYEE, ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway. Este endpoint es usado principalmente por otros microservicios."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Estado de la cuenta obtenido exitosamente"),
@@ -200,7 +220,9 @@ public class AccountController {
 
     @Operation(
         summary = "Eliminar cuenta",
-        description = "Elimina una cuenta del sistema permanentemente"
+        description = "Elimina una cuenta del sistema permanentemente. " +
+                "Roles requeridos: ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway. Esta operacion es solo para administradores."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Cuenta eliminada exitosamente"),

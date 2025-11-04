@@ -28,13 +28,15 @@ public class AccountUserController {
 
     @Operation(
         summary = "Asociar usuario a cuenta",
-        description = "Crea una relación entre una cuenta y un usuario, permitiendo que el usuario utilice los créditos cargados en esa cuenta"
+        description = "Crea una relacion entre una cuenta y un usuario, permitiendo que el usuario utilice los creditos cargados en esa cuenta. " +
+                "Roles requeridos: ROLE_USER, ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Usuario asociado exitosamente",
             content = @Content(schema = @Schema(implementation = AccountUserResponse.class))),
         @ApiResponse(responseCode = "404", description = "Cuenta o usuario no encontrado"),
-        @ApiResponse(responseCode = "500", description = "El usuario ya está asociado a esta cuenta")
+        @ApiResponse(responseCode = "500", description = "El usuario ya esta asociado a esta cuenta")
     })
     @PostMapping("/{accountId}/users/{userId}")
     public ResponseEntity<AccountUserResponse> associateUserToAccount(
@@ -48,13 +50,15 @@ public class AccountUserController {
 
     @Operation(
         summary = "Desasociar usuario de cuenta",
-        description = "Elimina la relación entre una cuenta y un usuario, impidiendo que el usuario utilice los créditos de esa cuenta"
+        description = "Elimina la relacion entre una cuenta y un usuario, impidiendo que el usuario utilice los creditos de esa cuenta. " +
+                "Roles requeridos: ROLE_USER, ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Usuario desasociado exitosamente",
             content = @Content(schema = @Schema(implementation = AccountUserResponse.class))),
         @ApiResponse(responseCode = "404", description = "Cuenta o usuario no encontrado"),
-        @ApiResponse(responseCode = "500", description = "No existe una asociación entre la cuenta y el usuario")
+        @ApiResponse(responseCode = "500", description = "No existe una asociacion entre la cuenta y el usuario")
     })
     @DeleteMapping("/{accountId}/users/{userId}")
     public ResponseEntity<AccountUserResponse> disassociateUserFromAccount(
@@ -68,7 +72,9 @@ public class AccountUserController {
 
     @Operation(
         summary = "Obtener usuarios de una cuenta",
-        description = "Retorna la lista de usuarios asociados a una cuenta, incluyendo sus roles asignados"
+        description = "Retorna la lista de usuarios asociados a una cuenta, incluyendo sus roles asignados. " +
+                "Roles requeridos: ROLE_USER, ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Usuarios obtenidos exitosamente",
@@ -85,7 +91,9 @@ public class AccountUserController {
 
     @Operation(
         summary = "Obtener cuentas de un usuario",
-        description = "Retorna la lista de cuentas asociadas a un usuario. Un usuario puede estar asociado a múltiples cuentas"
+        description = "Retorna la lista de cuentas asociadas a un usuario. Un usuario puede estar asociado a multiples cuentas. " +
+                "Roles requeridos: ROLE_USER, ROLE_ADMIN. " +
+                "NOTA: La validacion de roles se realiza en el API Gateway."
     )
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Cuentas obtenidas exitosamente",
