@@ -4,6 +4,22 @@
 
 Microservicio de autenticación y autorización del sistema. Se encarga de validar credenciales de usuarios mediante login, generar tokens JWT para autenticación, y manejar refresh tokens. Para validar usuarios, se comunica con el servicio de cuentas y usuarios. Este servicio no tiene base de datos propia, sino que utiliza el servicio de cuentas para validar la existencia y credenciales de los usuarios.
 
+## Roles del Sistema
+
+En el proyecto vamos a tener 3 roles:
+- **ROLE_EMPLOYEE**: Empleado (Encargado de Mantenimiento)
+- **ROLE_USER**: Usuario (Usuario final del sistema)
+- **ROLE_ADMIN**: Administrador (Administrador del sistema)
+
+Los roles se guardan en la base de datos del `accounts-service` en las tablas `roles` y `user_roles` (relación many-to-many). El `auth-service` consulta estos roles al hacer login y los incluye en el JWT.
+
+## Autenticación con Cookies
+
+Los tokens JWT se envían y reciben mediante cookies HTTP-only para mayor seguridad. Esto evita que el JavaScript del frontend pueda acceder directamente a los tokens, reduciendo el riesgo de ataques XSS.
+
+- **Access Token**: Se guarda en cookie `accessToken` con `HttpOnly=true`, `Secure=true` (en producción), `SameSite=Strict`
+- **Refresh Token**: Se guarda en cookie `refreshToken` con las mismas características de seguridad
+
 ## Dependencias
 
 ### spring-boot-starter-web

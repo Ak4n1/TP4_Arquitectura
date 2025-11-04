@@ -20,12 +20,18 @@ spring:
           uri: http://accounts-service:8080
           predicates:
             - Path=/api/accounts/**
-          filters:
-            - StripPrefix=1
-            - name: RequestRateLimiter
-              args:
-                redis-rate-limiter.replenishRate: 10
-                redis-rate-limiter.burstCapacity: 20
+
+        # Swagger UI for Accounts Service
+        - id: accounts-service-swagger-ui
+          uri: http://accounts-service:8080
+          predicates:
+            - Path=/swagger-ui/**
+        
+        # OpenAPI JSON for Accounts Service
+        - id: accounts-service-api-docs
+          uri: http://accounts-service:8080
+          predicates:
+            - Path=/v3/api-docs/**
 
       globalcors:
         cors-configurations:
@@ -38,7 +44,7 @@ spring:
               - DELETE
               - OPTIONS
             allowedHeaders: "*"
-            allowCredentials: true
+            allowCredentials: false
 
 # JWT Configuration (para validar tokens)
 jwt:

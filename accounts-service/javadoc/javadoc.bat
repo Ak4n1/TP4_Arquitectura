@@ -1,0 +1,1 @@
+cmd.exe /X /D /C ""C:\Program Files\BellSoft\LibericaJDK-17\bin\javadoc.exe" -J-Duser.language= -J-Duser.country= @options @packages"

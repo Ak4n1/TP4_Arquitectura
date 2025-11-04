@@ -1,0 +1,9 @@
+com.tudai.monopatines.accounts.accounts_service
+com.tudai.monopatines.accounts.accounts_service.config
+com.tudai.monopatines.accounts.accounts_service.controller
+com.tudai.monopatines.accounts.accounts_service.dto
+com.tudai.monopatines.accounts.accounts_service.entity
+com.tudai.monopatines.accounts.accounts_service.exception
+com.tudai.monopatines.accounts.accounts_service.repository
+com.tudai.monopatines.accounts.accounts_service.service
+com.tudai.monopatines.accounts.accounts_service.util
